@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-
+// dominar el uso de los hooks
 function App() {
 
   const [posts, setPosts] = useState();
