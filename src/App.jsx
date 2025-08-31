@@ -1,36 +1,34 @@
-import { useEffect, useState } from 'react'
-// dominar el uso de los hooks
-function App() {
+import React, { useEffect, useState } from 'react'
+import axios from "axios";
 
-  const [posts, setPosts] = useState();
+export const App = () => {
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((resp) => resp.json())
-      .then((post) => {
-        setPosts(post)
-      })
-      .catch(() => console.error("La peticion fallo"))
+  const [listCripto, setListCripto] = useState([])
+
+  useEffect(()=>{
+    axios.get(`${API_URL}posts`)
+    .then( (respuesta) => setListCripto(respuesta.data))
+    .catch(() => console.error("Error al acceder a criptos")
+    )
+
   }, [])
 
-  if (!posts) {
-    return <h1>...cargando</h1>
-  } else {
-    return (
-      <>
-        <h1>Lista de cripto monedas</h1>
-        <ul>
-          <>
-            {posts.map(post => (
-              <li>Nombre: {post.title}</li>
-            ))}
-          </>
-        </ul>
-      </>
-    )
-  }
-
-
+  if(!listCripto) return <h1>...Cargando</h1>
+    
+  return (
+    <>
+      <h1>Lista de Cripto monedas</h1>
+      <ul>{
+        listCripto.map(({id,title})=> (
+          <li key={id} >Nombre: {title} </li>
+        ) )
+        
+        }
+        
+      </ul>
+    </>
+  )
 }
 
 export default App
